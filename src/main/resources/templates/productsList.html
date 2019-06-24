@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Produkty</title>
+    <th:block th:replace="fragments/header :: header-css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/productsList.css}"/>
+
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <div class="well well-sm">
+        <form action="/products/list">
+
+
+            <input th:value="${query}" name="text" type="text" title="searchText">
+
+            <button value="search">Szukaj</button>
+        </form>
+        <strong>Category Title</strong>
+        <div class="btn-group">
+            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
+                class="glyphicon glyphicon-th"></span>Grid</a>
+        </div>
+    </div>
+
+    <div id="products" th:each="prod : ${products}"  class="list-group">
+        <div class="item col-xs-4 col-lg-4">
+            <div class="thumbnail">
+                <img class="group list-group-image" style="max-height: 150px" th:src="${prod.pictureURL}" alt="" />
+                <div class="caption">
+                    <h4 th:text="${prod.title}" class="group inner list-group-item-heading"></h4>
+                    <h5 th:text="${prod.categoryName}" class="group inner list-group-item-heading"></h5>
+                    <p th:text="${prod.description}" class="group inner list-group-item-text"></p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p th:text="${prod.price}" class="lead"></p>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <button type="button" class="btn btn-success"  th:onclick="'javascript:addToCart('+ ${prod.id}+');'">Dodaj do koszyka</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#list').click(function(event){event.preventDefault();
+        $('#products .item').addClass('list-group-item');});
+        $('#grid').click(function(event){event.preventDefault();
+        $('#products .item').removeClass('list-group-item');
+        $('#products .item').addClass('grid-group-item');});
+    });
+
+</script>
+</body>
+</html>

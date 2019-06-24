@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj kategorię</title>
+    <th:block th:replace="fragments/header :: header-css"></th:block>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<form th:action="@{/admin/category}" method="post">
+    <input type="text" name="catName" placeholder="Nazwa kategorii">
+    <input type="number" name="parentId" placeholder="Id rodzica">
+<button>Dodaj kategorię</button>
+
+</form>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

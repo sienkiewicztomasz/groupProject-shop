@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="fragments/header :: header-css"/>
+    <title>Zamówienie złożone</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<h1 th:text="'Dziękujemy za złożenie zamówienia'"></h1>
+<h2 th:text="'Kwota zamówienia: '+${order.getTotalCost()}"></h2>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

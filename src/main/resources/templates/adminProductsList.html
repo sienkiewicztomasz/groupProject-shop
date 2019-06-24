@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista produktów</title>
+    <th:block th:replace="fragments/header :: header-css"></th:block>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<form th:action="@{/admin/products}">
+    <input type="text" th:value="${query}" name="query">
+    <select name="productType">
+        <option th:value="''" th:text="Wybierz"></option>
+        <option th:selected="${productType eq pt}" th:each="pt : ${productTypes}" th:value="${pt}"
+                th:text="${pt.type}"></option>
+    </select>
+    <button>szukaj</button>
+
+</form>
+<table border="1px">
+    <tr>
+        <th>Id</th>
+        <th>Nazwa produktu</th>
+        <th>Stan magazynowy</th>
+        <th>Typ produktu</th>
+        <th>Cena</th>
+        <th>Kategoria</th>
+        <th>Akcje</th>
+    </tr>
+    <tr th:each="product : ${productsList}">
+        <td th:text="${product.id}"></td>
+        <td>
+            <span th:text="${product.title}"></span>
+        </td>
+        <td th:text="${product.stockAmount}"></td>
+        <td th:text="${product.productType.getType()}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.category.id+'. '+ product.category.name}"></td>
+        <td><a th:text="Edytuj" th:href="@{/admin/product/{id}(id=${product.id})}"></a></td>
+
+    </tr>
+</table>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
+

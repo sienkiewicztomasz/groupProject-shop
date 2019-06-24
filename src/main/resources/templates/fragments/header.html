@@ -1,0 +1,104 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:fragment="header-css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+
+        <link rel="stylesheet" th:href="@{/css/main.css}"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <div class="topnav">
+        <span th:if="${@userContextService.getLoggedUserEmail()}">
+            <span th:if="${@userContextService.admin()}">
+                <a href="/admin/category">Dodaj kategorię</a>
+                <a href="/admin/categories">Kategorie</a>
+                <a href="/admin/product">Dodaj produkt</a>
+                <a href="/admin/products">Lista produktów</a>
+            </span>
+            <span th:if="${@userContextService.user()}">
+                <a th:if="${@userContextService.getLoggedUserEmail()}" href="/products/list">Produkty - lista</a>
+                <a th:if="${@userContextService.getLoggedUserEmail()}" href="/products/table">Produkty - tabela z paginacją</a>
+            </span>
+            <a href="/logout" style="float: right">Wyloguj</a>
+        </span>
+        <span th:if="!${@userContextService.getLoggedUserEmail()}">
+            <a href="/register">Rejestracja</a>
+            <a href="/login">Login</a>
+        </span>
+        <p th:if="${@userContextService.getLoggedUserEmail()}"
+           th:text="'Zalogowano jako: '+ ${@userContextService.getLoggedUserEmail()}"
+           style="float: right;color: white"></p>
+        <span th:if="${@userContextService.user()}">
+        <div style="float: right" id="openweathermap-widget">
+
+            <link href="//openweathermap.org/themes/openweathermap/assets/vendor/owm/css/openweathermap-widget-right.min.css"
+                  rel="stylesheet">
+            <div class="widget-right widget-right--type4 widget-right--brown">
+                <div class="widget-right__layout widget-right__layout--brown">
+                    <div class="widget-right-card">
+                        <div class="widget-right__title"></div>
+                        <div class="widget-right__description"></div>
+                    </div>
+                    <img id="weather-image" src=""
+                         width="100"
+                         class="weather-right__icon weather-right__icon--type4 weather-right__icon--brown">
+                    <table class="weather-right-card">
+                        <tbody>
+                        <tr class="weather-right-card__items">
+                            <td class="weather-right-card__item weather-right-card__temperature-min">
+                                min<span>°C</span></td>
+                            <td class="weather-right-card__item weather-right-card__temperature-max">
+                                max<span>°C</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p style="float: right;color: white" id="weather"></p>
+        </span>
+
+    </div>
+    <form th:if="${@userContextService.user() and cartActive == true}" th:action="@{/placeOrder}">
+        <div style="float: right" id="cartWidget">
+        TWÓJ KOSZYK:
+        <ul id="orderItems">
+            <span id="toReplace"></span>
+        </ul>
+        <button type="submit" >KUPUJĘ</button>
+    </div>
+</form>
+    <script type="text/javascript">
+        var addToCart = function (prodId) {
+
+            $.post("/addToCart", {prodId: prodId})
+                .done(function (data) {
+                    console.log(data)
+                $('#toReplace').html('')
+                var parse = JSON.parse(data);
+                var orderLines = parse.orderLines;
+                var items = '';
+                for (o in orderLines) {
+                    var orderLine = orderLines[o];
+                    items += ("<li>" + orderLine.product.title + '(' + orderLine.quantity + ')' + "</li>")
+                }
+
+
+                $('#toReplace').html('').html(items);
+            })
+        };
+
+        $('a[href="' + this.location.pathname + '"]').addClass('active');
+    </script>
+
+</div>
+
+</body>
+</html>

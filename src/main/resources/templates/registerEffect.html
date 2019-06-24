@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Zarejestrowano</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<h3 th:text="'Poprawnie zarejestrowano użytkownika '"></h3>
+<p th:text="${registrationData.email}"></p>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
